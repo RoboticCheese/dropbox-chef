@@ -10,67 +10,74 @@ Dropbox Cookbook
 [codeclimate]: https://codeclimate.com/github/RoboticCheese/dropbox-chef
 [coveralls]: https://coveralls.io/r/RoboticCheese/dropbox-chef
 
-A cookbook for installing the Chef Development Kit.
-
-TODO: Enter the cookbook description here.
+A Chef cookbook for installing the Dropbox application.
 
 Requirements
 ============
 
-TODO: Describe cookbook dependencies.
+This cookbook consumes the
+[dmg cookbook](https://supermarket.chef.io/cookbooks/dmg) to support
+installation of OS X packages.
 
 Usage
 =====
 
-TODO: Describe how to use the cookbook.
+Resources can be called directly, or the main recipe that uses those resources
+can be added to your run\_list.
 
 Recipes
 =======
 
 ***default***
 
-TODO: Describe each component recipe.
+Calls the `dropbox` resource to do a package install.
 
 Attributes
 ==========
 
 ***default***
 
-TODO: Describe any noteworthy attributes.
+A custom package URL can be provided.
+
+    default['dropbox']['package_url'] = nil
 
 Resources
 =========
 
 ***dropbox***
 
-TODO: Describe each included resource.
+Wraps the fetching and installation of a remote package into one main resource.
 
 Syntax:
 
-    dropbox 'my_resource' do
-        attribute1 'value1'
-        action :create
+    dropbox 'dropbox' do
+        package_url 'https://somewhere.org/dropbox.dmg'
+        action :install
     end
 
 Actions:
 
-| Action  | Description  |
-|---------|--------------|
-| action1 | Do something |
+| Action     | Description                               |
+|------------|-------------------------------------------|
+| `:install` | Default; installs the Dropbox application |
 
 Attributes:
 
-| Attribute  | Default        | Description          |
-|------------|----------------|----------------------|
-| attribute1 | `'some_value'` | Do something         |
-| action     | `:create`      | Action(s) to perform |
+| Attribute   | Default    | Description                                   |
+|-------------|------------|-----------------------------------------------|
+| package_url | `nil`      | Optionally download package from a custom URL |
+| action      | `:install` | The action to perform                         |
 
 Providers
 =========
 
-TODO: Describe each included provider
+***Chef::Provider::Dropbox***
 
-***Chef::Provider::SomeProvider***
+A generic provider for all non-platform-specific functionality.
+
+***Chef::Provider::Dropbox::MacOsX***
+
+Provides the Mac OS X platform support.
 
 Contributing
 ============
