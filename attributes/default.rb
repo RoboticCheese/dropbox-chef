@@ -1,7 +1,7 @@
 # Encoding: UTF-8
 #
 # Cookbook Name:: dropbox
-# Recipe:: default
+# Attributes:: default
 #
 # Copyright 2014 Jonathan Hartman
 # 
@@ -18,6 +18,4 @@
 # limitations under the License.
 #
 
-dropbox 'dropbox' do
-  package_url node['dropbox']['package_url']
-end
+default['dropbox']['package_url'] = nil

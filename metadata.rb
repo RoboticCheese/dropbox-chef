@@ -8,4 +8,8 @@ license          'apache2'
 description      'Installs/Configures dropbox'
 long_description 'Installs/Configures dropbox'
 version          '0.0.1'
+
+depends          'dmg', '~> 2.2'
+
+supports         'mac_os_x'
 # rubocop:enable SingleSpaceBeforeFirstArg
