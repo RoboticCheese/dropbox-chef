@@ -3,9 +3,10 @@
 require_relative '../spec_helper'
 
 describe 'dropbox::default' do
+  let(:platform) { { platform: 'mac_os_x', version: '10.10' } }
   let(:overrides) { {} }
   let(:runner) do
-    ChefSpec::ServerRunner.new do |node|
+    ChefSpec::ServerRunner.new(platform) do |node|
       overrides.each { |k, v| node.set['dropbox'][k] = v }
     end
   end
@@ -22,7 +23,7 @@ describe 'dropbox::default' do
 
     it 'installs from the desired package URL' do
       expect(chef_run).to install_dropbox('dropbox')
-        .with(package_url: overrides['package_url'])
+        .with(package_url: overrides[:package_url])
     end
   end
 end
