@@ -4,13 +4,13 @@
 # Library:: provider_dropbox
 #
 # Copyright 2014 Jonathan Hartman
-# 
+#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-# 
+#
 #     http://www.apache.org/licenses/LICENSE-2.0
-# 
+#
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -89,17 +89,16 @@ class Chef
       # @return [String]
       #
       def download_source
-        @download_source ||= if new_resource.package_url
-                               chase_redirect(new_resource.package_url)
-                              else
-                                params = URI.encode_www_form(
-                                  full: 1,
-                                  plat: node['platform_family'][0..2]
-                                )
-                                chase_redirect(
-                                  "https://www.dropbox.com/download?#{params}"
-                                )
-                              end
+        unless @download_source
+          if new_resource.package_url
+            res = chase_redirect(new_resource.package_url)
+          else
+            params = URI.encode_www_form(full: 1,
+                                         plat: node['platform_family'][0..2])
+            res = chase_redirect("https://www.dropbox.com/download?#{params}")
+          end
+        end
+        @download_source ||= res
       end
 
       #
