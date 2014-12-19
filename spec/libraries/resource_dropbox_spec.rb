@@ -4,7 +4,7 @@ require_relative '../spec_helper'
 require_relative '../../libraries/resource_dropbox'
 
 describe Chef::Resource::Dropbox do
-  let(:platform) { { platform: 'mac_os_x', version: '10.10' } }
+  let(:platform) { { platform: 'mac_os_x', version: '10.9.2' } }
   let(:node) { Fauxhai.mock(platform).data }
   let(:package_url) { nil }
   let(:resource) do
@@ -93,7 +93,7 @@ describe Chef::Resource::Dropbox do
 
   describe '#default_provider' do
     context 'an OS X platform' do
-      let(:platform) { { platform: 'mac_os_x', version: '10.10' } }
+      let(:platform) { { platform: 'mac_os_x', version: '10.9.2' } }
 
       it 'returns the OS X provider' do
         expected = Chef::Provider::Dropbox::MacOsX

@@ -3,7 +3,7 @@
 require_relative '../spec_helper'
 
 describe 'dropbox::default' do
-  let(:platform) { { platform: 'mac_os_x', version: '10.10' } }
+  let(:platform) { { platform: 'mac_os_x', version: '10.9.2' } }
   let(:overrides) { {} }
   let(:runner) do
     ChefSpec::ServerRunner.new(platform) do |node|

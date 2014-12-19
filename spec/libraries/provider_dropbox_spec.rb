@@ -4,7 +4,7 @@ require_relative '../spec_helper'
 require_relative '../../libraries/provider_dropbox'
 
 describe Chef::Provider::Dropbox do
-  let(:platform) { { platform: 'mac_os_x', version: '10.10' } }
+  let(:platform) { { platform: 'mac_os_x', version: '10.9.2' } }
   let(:node) { Fauxhai.mock(platform).data }
   let(:package_url) { nil }
   let(:new_resource) do
