@@ -115,7 +115,8 @@ describe Chef::Provider::Dropbox do
       expected = if package_url
                    package_url
                  else
-                   'https://www.dropbox.com/download?full=1&plat=mac'
+                   'https://www.dropbox.com/download?full=1&plat=' <<
+                   platform[:platform][0..2]
                  end
       allow_any_instance_of(described_class).to receive(:chase_redirect)
         .with(expected).and_return(expected)
@@ -127,6 +128,27 @@ describe Chef::Provider::Dropbox do
 
         it 'generates a download URL' do
           expected = 'https://www.dropbox.com/download?full=1&plat=mac'
+          expect(provider.send(:download_source)).to eq(expected)
+        end
+      end
+
+      context 'a package_url override' do
+        let(:package_url) { 'https://example.com/z' }
+
+        it 'uses the package_url' do
+          expect(provider.send(:download_source)).to eq(package_url)
+        end
+      end
+    end
+
+    context 'Windows' do
+      let(:platform) { { platform: 'windows', version: '2012R2' } }
+
+      context 'no package_url override' do
+        let(:package_url) { nil }
+
+        it 'generates a download URL' do
+          expected = 'https://www.dropbox.com/download?full=1&plat=win'
           expect(provider.send(:download_source)).to eq(expected)
         end
       end
