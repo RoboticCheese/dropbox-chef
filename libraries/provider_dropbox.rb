@@ -21,6 +21,7 @@
 require 'chef/provider'
 require 'net/http'
 require_relative 'provider_dropbox_mac_os_x'
+require_relative 'provider_dropbox_windows'
 
 class Chef
   class Provider

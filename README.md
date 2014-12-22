@@ -79,6 +79,10 @@ A generic provider for all non-platform-specific functionality.
 
 Provides the Mac OS X platform support.
 
+***Chef::Provider::Dropbox::Windows***
+
+Provides the Windows platform support.
+
 Contributing
 ============
 
