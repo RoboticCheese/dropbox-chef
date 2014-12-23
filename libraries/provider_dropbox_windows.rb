@@ -37,7 +37,7 @@ class Chef
         end
 
         #
-        # Use the dmg_package resource for Windows
+        # Use the windows_package resource for Windows
         #
         # @return [Chef::Resource::Windows]
         #
