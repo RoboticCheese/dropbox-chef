@@ -119,13 +119,15 @@ class Chef
       # @return [String]
       #
       def chase_redirect(url)
-        uri = URI.parse(url)
+        u = URI.parse(url)
         (0..9).each do
-          resp = Net::HTTP.get_response(uri)
-          break unless resp.code[0] == '3'
-          uri = URI.parse(resp.header['location'])
+          opts = { use_ssl: u.scheme == 'https',
+                   ca_file: Chef::Config[:ssl_ca_file] }
+          resp = Net::HTTP.start(u.host, u.port, opts) { |h| h.head(u) }
+          return u.to_s unless resp.is_a?(Net::HTTPRedirection)
+          u = URI.parse(resp['location'])
         end
-        uri.to_s
+        nil
       end
     end
   end

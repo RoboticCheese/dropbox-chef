@@ -1,13 +1,15 @@
 ---
 driver:
   name: vagrant
-  insert_key: false
 
 provisioner:
   name: chef_zero
 
 platforms:
   - name: macosx-10.9
+    driver:
+      ssh:
+        insert_key: false
 
 suites:
   - name: default

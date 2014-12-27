@@ -178,18 +178,20 @@ describe Chef::Provider::Dropbox do
   end
 
   describe '#chase_redirect' do
-    let(:code) { nil }
-    let(:header) { nil }
-    let(:response) { double(code: code, header: header) }
-    let(:url) { 'http://example.com/somewhere' }
+    let(:response) { nil }
+    let(:url) { 'https://example.com/somewhere' }
+    let(:http) { double }
 
     before(:each) do
-      allow(Net::HTTP).to receive(:get_response).with(URI.parse(url))
-        .and_return(response)
+      uri = URI.parse(url)
+      opts = { use_ssl: true, ca_file: nil }
+      expect(http).to receive(:head).with(URI.parse(url)).and_return(response)
+      allow(Net::HTTP).to receive(:start).with(uri.host, uri.port, opts)
+        .and_yield(http)
     end
 
     context 'no redirect' do
-      let(:code) { '200' }
+      let(:response) { Net::HTTPResponse.new(1, 200, 'hi') }
 
       it 'returns the same URL' do
         expect(provider.send(:chase_redirect, url)).to eq(url)
@@ -197,39 +199,72 @@ describe Chef::Provider::Dropbox do
     end
 
     context 'a single level of redirect' do
-      let(:code) { '301' }
-      let(:suburl) { 'http://example.com/elsewhere' }
-      let(:subresp) { double(code: '200', header: {}) }
-      let(:header) { { 'location' => suburl } }
+      let(:suburl) { 'https://example.com/elsewhere' }
+      let(:subresponse) { Net::HTTPResponse.new(1, 200, 'hi') }
+      let(:response) do
+        r = Net::HTTPRedirection.new(1, 302, 'hi')
+        r['location'] = suburl
+        r
+      end
 
       before(:each) do
-        allow(Net::HTTP).to receive(:get_response).with(URI.parse(suburl))
-          .and_return(subresp)
+        expect(http).to receive(:head).with(URI.parse(suburl))
+          .and_return(subresponse)
       end
 
       it 'follows the redirect' do
-        expect(provider.send(:chase_redirect, url)).to eq(header['location'])
+        expect(provider.send(:chase_redirect, url)).to eq(suburl)
       end
     end
 
     context 'multiple levels of redirects' do
-      let(:subsuburl) { 'http://example.com/pt3' }
-      let(:subsubresp) { double(code: '200', header: {}) }
-      let(:suburl) { 'http://example.com/pt2' }
-      let(:subresp) { double(code: '301', header: subheader) }
-      let(:subheader) { { 'location' => subsuburl } }
-      let(:header) { { 'location' => suburl } }
-      let(:code) { '301' }
+      let(:subsuburl) { 'https://example.com/pt3' }
+      let(:subsubresponse) { Net::HTTPResponse.new(1, 200, 'hi') }
+
+      let(:suburl) { 'https://example.com/pt2' }
+      let(:subresponse) do
+        r = Net::HTTPRedirection.new(1, 302, 'hi')
+        r['location'] = subsuburl
+        r
+      end
+
+      let(:response) do
+        r = Net::HTTPRedirection.new(1, 302, 'hi')
+        r['location'] = suburl
+        r
+      end
 
       before(:each) do
-        allow(Net::HTTP).to receive(:get_response).with(URI.parse(suburl))
-          .and_return(subresp)
-        allow(Net::HTTP).to receive(:get_response).with(URI.parse(subsuburl))
-          .and_return(subsubresp)
+        expect(http).to receive(:head).with(URI.parse(subsuburl))
+          .and_return(subsubresponse)
+        expect(http).to receive(:head).with(URI.parse(suburl))
+          .and_return(subresponse)
       end
 
       it 'follows all the redirects' do
         expect(provider.send(:chase_redirect, url)).to eq(subsuburl)
+      end
+    end
+
+    context 'too many levels of redirects' do
+      let(:response) do
+        r = Net::HTTPRedirection.new(1, 302, 'hi')
+        r['location'] = 'https://example.com/pt0'
+        r
+      end
+
+      before(:each) do
+        (0..10).each do |i|
+          uri = "https://example.com/pt#{i}"
+          r = Net::HTTPRedirection.new(1, 302, 'hi')
+          r['location'] = "https://example.com/pt#{i + 1}"
+          allow(http).to receive(:head).with(URI.parse(uri))
+            .and_return(r)
+        end
+      end
+
+      it 'returns nil' do
+        expect(provider.send(:chase_redirect, url)).to eq(nil)
       end
     end
   end
