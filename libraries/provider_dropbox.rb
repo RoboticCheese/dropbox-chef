@@ -123,7 +123,7 @@ class Chef
         (0..9).each do
           opts = { use_ssl: u.scheme == 'https',
                    ca_file: Chef::Config[:ssl_ca_file] }
-          resp = Net::HTTP.start(u.host, u.port, opts) { |h| h.head(u) }
+          resp = Net::HTTP.start(u.host, u.port, opts) { |h| h.head(u.to_s) }
           return u.to_s unless resp.is_a?(Net::HTTPRedirection)
           u = URI.parse(resp['location'])
         end

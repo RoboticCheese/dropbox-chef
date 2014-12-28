@@ -185,7 +185,7 @@ describe Chef::Provider::Dropbox do
     before(:each) do
       uri = URI.parse(url)
       opts = { use_ssl: true, ca_file: nil }
-      expect(http).to receive(:head).with(URI.parse(url)).and_return(response)
+      expect(http).to receive(:head).with(url).and_return(response)
       allow(Net::HTTP).to receive(:start).with(uri.host, uri.port, opts)
         .and_yield(http)
     end
@@ -208,7 +208,7 @@ describe Chef::Provider::Dropbox do
       end
 
       before(:each) do
-        expect(http).to receive(:head).with(URI.parse(suburl))
+        expect(http).to receive(:head).with(suburl)
           .and_return(subresponse)
       end
 
@@ -235,9 +235,9 @@ describe Chef::Provider::Dropbox do
       end
 
       before(:each) do
-        expect(http).to receive(:head).with(URI.parse(subsuburl))
+        expect(http).to receive(:head).with(subsuburl)
           .and_return(subsubresponse)
-        expect(http).to receive(:head).with(URI.parse(suburl))
+        expect(http).to receive(:head).with(suburl)
           .and_return(subresponse)
       end
 
@@ -258,7 +258,7 @@ describe Chef::Provider::Dropbox do
           uri = "https://example.com/pt#{i}"
           r = Net::HTTPRedirection.new(1, 302, 'hi')
           r['location'] = "https://example.com/pt#{i + 1}"
-          allow(http).to receive(:head).with(URI.parse(uri))
+          allow(http).to receive(:head).with(uri)
             .and_return(r)
         end
       end
