@@ -9,7 +9,9 @@ describe Chef::Provider::Dropbox::Windows do
   let(:provider) { described_class.new(new_resource, nil) }
 
   describe '#tailor_package_to_platform' do
-    let(:package) { double(app: true, volumes_dir: true, source: true) }
+    let(:package) do
+      double(app: true, volumes_dir: true, source: true, installer_type: true)
+    end
 
     let(:provider) do
       p = super()
@@ -24,6 +26,11 @@ describe Chef::Provider::Dropbox::Windows do
 
     it 'sets the correct source' do
       expect(package).to receive(:source).with('/tmp/package.dmg')
+      provider.send(:tailor_package_to_platform)
+    end
+
+    it 'sets the correct installer type' do
+      expect(package).to receive(:installer_type).with(:nsis)
       provider.send(:tailor_package_to_platform)
     end
   end

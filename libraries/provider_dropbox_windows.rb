@@ -34,6 +34,7 @@ class Chef
         #
         def tailor_package_to_platform
           @package.source(URI.encode(download_dest))
+          @package.installer_type(:nsis)
         end
 
         #
