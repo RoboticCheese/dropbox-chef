@@ -7,7 +7,7 @@ maintainer_email 'j@p4nt5.com'
 license          'Apache v2.0'
 description      'Installs Dropbox'
 long_description 'Installs Dropbox'
-version          '0.1.0'
+version          '0.1.1'
 
 depends          'dmg', '~> 2.2'
 depends          'windows', '~> 1.36'
