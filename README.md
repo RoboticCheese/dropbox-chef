@@ -15,8 +15,11 @@ A Chef cookbook for installing the Dropbox application.
 Requirements
 ============
 
-This cookbook consumes the
-[dmg](https://supermarket.chef.io/cookbooks/dmg) and
+This cookbook currently requires an OS X or Windows node. While Dropbox does
+distribute packages for Linux, they are kept in a different download area with
+a different API than the OS X and Windows packages.
+
+It consumes the [dmg](https://supermarket.chef.io/cookbooks/dmg) and
 [windows](https://supermarket.chef.io/cookbooks/windows) cookbooks to support
 OS X and Windows installs.
 
@@ -25,6 +28,10 @@ Usage
 
 Resources can be called directly, or the main recipe that uses those resources
 can be added to your run\_list.
+
+Note that this cookbook only installs the Dropbox application. A username and
+password will still have to be entered in the UI the first time the application
+is started.
 
 Recipes
 =======
