@@ -9,7 +9,7 @@ require 'simplecov-console'
 require 'coveralls'
 require 'tmpdir'
 require 'fileutils'
-require_relative 'support/matchers/dropbox'
+require_relative '../libraries/matchers'
 require_relative 'support/resource/dmg_package'
 require_relative 'support/provider/dmg_package'
 
