@@ -1,12 +1,12 @@
 Dropbox Cookbook
 ================
-[![Cookbook Version](http://img.shields.io/cookbook/v/dropbox.svg)][cookbook]
-[![Build Status](http://img.shields.io/travis/RoboticCheese/dropbox-chef.svg)][travis]
-[![Code Climate](http://img.shields.io/codeclimate/github/RoboticCheese/dropbox-chef.svg)][codeclimate]
-[![Coverage Status](http://img.shields.io/coveralls/RoboticCheese/dropbox-chef.svg)][coveralls]
+[![Cookbook Version](https://img.shields.io/cookbook/v/dropbox.svg)][cookbook]
+[![Build Status](https://img.shields.io/travis/RoboticCheese/dropbox-chef.svg)][travis]
+[![Code Climate](https://img.shields.io/codeclimate/github/RoboticCheese/dropbox-chef.svg)][codeclimate]
+[![Coverage Status](https://img.shields.io/coveralls/RoboticCheese/dropbox-chef.svg)][coveralls]
 
-[cookbook]: https://supermarket.getchef.com/cookbooks/dropbox
-[travis]: http://travis-ci.org/RoboticCheese/dropbox-chef
+[cookbook]: https://supermarket.chef.io/cookbooks/dropbox
+[travis]: https://travis-ci.org/RoboticCheese/dropbox-chef
 [codeclimate]: https://codeclimate.com/github/RoboticCheese/dropbox-chef
 [coveralls]: https://coveralls.io/r/RoboticCheese/dropbox-chef
 
