@@ -6,7 +6,7 @@ guard :rspec, all_on_start: true, notification: false do
 
   watch(%r{^recipes/(.+)\.rb$}) { |m| "spec/#{m[1]}_spec.rb" }
   watch(%r{^attributes/(.+)\.rb$})
-  watch(%r{^files/(.+)/]})
+  watch(%r{^files/(.+)})
   watch(%r{^templates/(.+)})
   watch(%r{^providers/(.+)\.rb})
   watch(%r{^resources/(.+)\.rb})

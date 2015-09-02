@@ -109,7 +109,7 @@ class Chef
       #
       def download_dest
         ::File.join(Chef::Config[:file_cache_path],
-                    ::File.basename(URI.decode(download_source)).gsub(' ', ''))
+                    ::File.basename(URI.decode(download_source)).delete(' '))
       end
 
       #
