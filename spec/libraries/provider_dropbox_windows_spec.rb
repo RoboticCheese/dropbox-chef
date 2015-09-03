@@ -30,7 +30,7 @@ describe Chef::Provider::Dropbox::Windows do
     end
 
     it 'sets the correct installer type' do
-      expect(package).to receive(:installer_type).with(:nsis)
+      expect(package).to receive(:installer_type).with(:wise)
       provider.send(:tailor_package_to_platform)
     end
   end
