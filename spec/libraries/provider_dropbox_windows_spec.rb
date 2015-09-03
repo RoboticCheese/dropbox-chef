@@ -37,7 +37,7 @@ describe Chef::Provider::Dropbox::Windows do
 
   describe '#package_resource_class' do
     it 'returns the windows_package resource' do
-      expected = Chef::Resource::WindowsPackage
+      expected = Chef::Resource::WindowsCookbookPackage
       expect(provider.send(:package_resource_class)).to eq(expected)
     end
   end

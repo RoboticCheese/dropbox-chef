@@ -43,7 +43,7 @@ class Chef
         # @return [Chef::Resource::Windows]
         #
         def package_resource_class
-          Chef::Resource::WindowsPackage
+          Chef::Resource::WindowsCookbookPackage
         end
       end
     end
