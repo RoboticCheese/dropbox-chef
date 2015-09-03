@@ -3,13 +3,15 @@
 require_relative '../spec_helper'
 
 describe 'Dropbox package' do
-  it 'is installed' do
-    case os[:family]
-    when 'darwin'
-      f = '/Applications/Dropbox.app/Contents/MacOS/Dropbox'
-      expect(file(f)).to be_executable
-    else
-      fail('Unsupported platform')
+  describe file('/Applications/Dropbox.app'), if: os[:family] == 'darwin' do
+    it 'exists' do
+      expect(subject).to be_directory
+    end
+  end
+
+  describe package('Dropbox'), if: os[:family] == 'windows' do
+    it 'is installed' do
+      expect(subject).to be_installed
     end
   end
 end
