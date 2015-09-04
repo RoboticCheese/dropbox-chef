@@ -8,7 +8,7 @@ describe Chef::Provider::Dropbox do
   let(:node) { Fauxhai.mock(platform).data }
   let(:package_url) { nil }
   let(:new_resource) do
-    double(name: 'dropbox', package_url: package_url, :'installed=' => true)
+    double(name: 'dropbox', package_url: package_url, 'installed=' => true)
   end
   let(:provider) { described_class.new(new_resource, nil) }
 

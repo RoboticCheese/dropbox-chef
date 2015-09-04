@@ -11,7 +11,9 @@ require 'tmpdir'
 require 'fileutils'
 require_relative '../libraries/matchers'
 require_relative 'support/resource/dmg_package'
+require_relative 'support/resource/windows_cookbook_package'
 require_relative 'support/provider/dmg_package'
+require_relative 'support/provider/windows_cookbook_package'
 
 RSpec.configure do |c|
   c.color = true

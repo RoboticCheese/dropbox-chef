@@ -30,14 +30,14 @@ describe Chef::Provider::Dropbox::Windows do
     end
 
     it 'sets the correct installer type' do
-      expect(package).to receive(:installer_type).with(:nsis)
+      expect(package).to receive(:installer_type).with(:wise)
       provider.send(:tailor_package_to_platform)
     end
   end
 
   describe '#package_resource_class' do
     it 'returns the windows_package resource' do
-      expected = Chef::Resource::WindowsPackage
+      expected = Chef::Resource::WindowsCookbookPackage
       expect(provider.send(:package_resource_class)).to eq(expected)
     end
   end

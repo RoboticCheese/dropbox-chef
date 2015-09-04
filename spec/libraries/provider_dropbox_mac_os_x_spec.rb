@@ -33,7 +33,7 @@ describe Chef::Provider::Dropbox::MacOsX do
     end
 
     it 'sets the correct source' do
-      expected = URI.encode('file:///tmp/package.dmg')
+      expected = 'file:///tmp/package.dmg'
       expect(package).to receive(:source).with(expected)
       provider.send(:tailor_package_to_platform)
     end

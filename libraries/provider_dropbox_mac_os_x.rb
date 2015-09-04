@@ -18,7 +18,7 @@
 # limitations under the License.
 #
 
-require 'net/http'
+require_relative 'provider_dropbox'
 
 class Chef
   class Provider
@@ -35,7 +35,7 @@ class Chef
         def tailor_package_to_platform
           @package.app('Dropbox')
           @package.volumes_dir('Dropbox Installer')
-          @package.source(URI.encode("file://#{download_dest}"))
+          @package.source("file://#{download_dest}")
         end
 
         #
