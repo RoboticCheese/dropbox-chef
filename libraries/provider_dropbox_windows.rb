@@ -18,7 +18,7 @@
 # limitations under the License.
 #
 
-require 'net/http'
+require_relative 'provider_dropbox'
 
 class Chef
   class Provider
@@ -33,7 +33,7 @@ class Chef
         # Ensure the package resource gets Windows-specific attributes
         #
         def tailor_package_to_platform
-          @package.source(URI.encode(download_dest))
+          @package.source(download_dest)
           @package.installer_type(:wise)
         end
 

@@ -19,6 +19,7 @@
 #
 
 require 'chef/provider'
+require 'chef-config/path_helper'
 require 'net/http'
 require_relative 'provider_dropbox_mac_os_x'
 require_relative 'provider_dropbox_windows'
@@ -108,8 +109,10 @@ class Chef
       # @return [String]
       #
       def download_dest
-        ::File.join(Chef::Config[:file_cache_path],
-                    ::File.basename(URI.decode(download_source)).delete(' '))
+        ChefConfig::PathHelper.join(
+          Chef::Config[:file_cache_path],
+          ::File.basename(URI.decode(download_source)).delete(' ')
+        )
       end
 
       #
