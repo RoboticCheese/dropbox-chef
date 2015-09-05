@@ -14,7 +14,7 @@ group :test do
   gem 'rake'
   gem 'cane'
   gem 'countloc'
-  gem 'rubocop'
+  gem 'rubocop', '< 0.34.0'
   gem 'foodcritic'
   gem 'rspec', '>= 3'
   gem 'chefspec', '>= 4'
