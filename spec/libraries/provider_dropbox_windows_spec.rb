@@ -4,41 +4,43 @@ require_relative '../spec_helper'
 require_relative '../../libraries/provider_dropbox_windows'
 
 describe Chef::Provider::Dropbox::Windows do
-  let(:package_url) { nil }
-  let(:new_resource) { double(name: 'dropbox', package_url: package_url) }
+  let(:name) { 'default' }
+  let(:new_resource) { Chef::Resource::Dropbox.new(name, nil) }
   let(:provider) { described_class.new(new_resource, nil) }
 
-  describe '#tailor_package_to_platform' do
-    let(:package) do
-      double(app: true, volumes_dir: true, source: true, installer_type: true)
-    end
-
-    let(:provider) do
-      p = super()
-      p.instance_variable_set(:@package, package)
-      p
-    end
-
-    before(:each) do
-      allow_any_instance_of(described_class).to receive(:download_dest)
-        .and_return('/tmp/package.dmg')
-    end
-
-    it 'sets the correct source' do
-      expect(package).to receive(:source).with('/tmp/package.dmg')
-      provider.send(:tailor_package_to_platform)
-    end
-
-    it 'sets the correct installer type' do
-      expect(package).to receive(:installer_type).with(:wise)
-      provider.send(:tailor_package_to_platform)
+  describe 'PATH' do
+    it 'returns the app directory' do
+      expected = File.expand_path('/Program Files/Dropbox')
+      expect(described_class::PATH).to eq(expected)
     end
   end
 
-  describe '#package_resource_class' do
-    it 'returns the windows_package resource' do
-      expected = Chef::Resource::WindowsCookbookPackage
-      expect(provider.send(:package_resource_class)).to eq(expected)
+  describe '.provides?' do
+    let(:platform) { nil }
+    let(:node) { ChefSpec::Macros.stub_node('node.example', platform) }
+    let(:res) { described_class.provides?(node, new_resource) }
+
+    context 'Windows' do
+      let(:platform) { { platform: 'windows', version: '2012R2' } }
+
+      it 'returns true' do
+        expect(res).to eq(true)
+      end
+    end
+  end
+
+  describe '#install!' do
+    before(:each) do
+      allow_any_instance_of(described_class).to receive(:source_path)
+        .and_return('http://example.com/dropbox.exe')
+    end
+
+    it 'uses a windows_cookbook_package to install Dropbox' do
+      p = provider
+      expect(p).to receive(:windows_cookbook_package).with('Dropbox').and_yield
+      expect(p).to receive(:source).with('http://example.com/dropbox.exe')
+      expect(p).to receive(:installer_type).with(:wise)
+      p.send(:install!)
     end
   end
 end

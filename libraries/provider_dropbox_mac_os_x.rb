@@ -3,7 +3,7 @@
 # Cookbook Name:: dropbox
 # Library:: provider_dropbox_mac_os_x
 #
-# Copyright 2014 Jonathan Hartman
+# Copyright 2014-2015 Jonathan Hartman
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,29 +22,28 @@ require_relative 'provider_dropbox'
 
 class Chef
   class Provider
-    class Dropbox < Provider
-      # A Chef provider for Dropbox pieces specific to Mac OS X
+    class Dropbox < Provider::LWRPBase
+      # A Chef provider for Dropbox for Mac OS X.
       #
       # @author Jonathan Hartman <j@p4nt5.com>
       class MacOsX < Dropbox
+        PATH ||= '/Applications/Dropbox.app'
+
+        provides :dropbox, platform_family: 'mac_os_x'
+
         private
 
         #
-        # Ensure the package resource gets the OS X-specific attributes it needs
+        # Use a dmg_package resource to install the Dropbox app.
         #
-        def tailor_package_to_platform
-          @package.app('Dropbox')
-          @package.volumes_dir('Dropbox Installer')
-          @package.source("file://#{download_dest}")
-        end
-
+        # (see Chef::Provider::Dropbox#install!)
         #
-        # Use the dmg_package resource for OS X
-        #
-        # @return [Chef::Resource::DmgPackage]
-        #
-        def package_resource_class
-          Chef::Resource::DmgPackage
+        def install!
+          s = source_path
+          dmg_package 'Dropbox' do
+            source s
+            volumes_dir 'Dropbox Installer'
+          end
         end
       end
     end

@@ -4,45 +4,42 @@ require_relative '../spec_helper'
 require_relative '../../libraries/provider_dropbox_mac_os_x'
 
 describe Chef::Provider::Dropbox::MacOsX do
-  let(:package_url) { nil }
-  let(:new_resource) { double(name: 'dropbox', package_url: package_url) }
+  let(:name) { 'default' }
+  let(:new_resource) { Chef::Resource::Dropbox.new(name, nil) }
   let(:provider) { described_class.new(new_resource, nil) }
 
-  describe '#tailor_package_to_platform' do
-    let(:package) { double(app: true, volumes_dir: true, source: true) }
-
-    let(:provider) do
-      p = super()
-      p.instance_variable_set(:@package, package)
-      p
-    end
-
-    before(:each) do
-      allow_any_instance_of(described_class).to receive(:download_dest)
-        .and_return('/tmp/package.dmg')
-    end
-
-    it 'sets the correct app name' do
-      expect(package).to receive(:app).with('Dropbox')
-      provider.send(:tailor_package_to_platform)
-    end
-
-    it 'sets the correct volumes dir' do
-      expect(package).to receive(:volumes_dir).with('Dropbox Installer')
-      provider.send(:tailor_package_to_platform)
-    end
-
-    it 'sets the correct source' do
-      expected = 'file:///tmp/package.dmg'
-      expect(package).to receive(:source).with(expected)
-      provider.send(:tailor_package_to_platform)
+  describe 'PATH' do
+    it 'returns the app directory' do
+      expect(described_class::PATH).to eq('/Applications/Dropbox.app')
     end
   end
 
-  describe '#package_resource_class' do
-    it 'returns the dmg_package resource' do
-      expected = Chef::Resource::DmgPackage
-      expect(provider.send(:package_resource_class)).to eq(expected)
+  describe '.provides?' do
+    let(:platform) { nil }
+    let(:node) { ChefSpec::Macros.stub_node('node.example', platform) }
+    let(:res) { described_class.provides?(node, new_resource) }
+
+    context 'Mac OS X' do
+      let(:platform) { { platform: 'mac_os_x', version: '10.10' } }
+
+      it 'returns true' do
+        expect(res).to eq(true)
+      end
+    end
+  end
+
+  describe '#install!' do
+    before(:each) do
+      allow_any_instance_of(described_class).to receive(:source_path)
+        .and_return('http://example.com/dropbox.dmg')
+    end
+
+    it 'uses a dmg_package to install Dropbox' do
+      p = provider
+      expect(p).to receive(:dmg_package).with('Dropbox').and_yield
+      expect(p).to receive(:source).with('http://example.com/dropbox.dmg')
+      expect(p).to receive(:volumes_dir).with('Dropbox Installer')
+      p.send(:install!)
     end
   end
 end

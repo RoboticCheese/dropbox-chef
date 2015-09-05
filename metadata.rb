@@ -9,6 +9,9 @@ description      'Installs Dropbox'
 long_description 'Installs Dropbox'
 version          '0.1.1'
 
+source_url       'https://github.com/roboticcheese/dropbox-chef'
+issues_url       'https://github.com/roboticcheese/dropbox-chef/issues'
+
 depends          'dmg', '~> 2.2'
 depends          'windows', '~> 1.36'
 

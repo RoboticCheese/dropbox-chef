@@ -3,7 +3,7 @@
 # Cookbook Name:: dropbox
 # Library:: provider_dropbox
 #
-# Copyright 2014 Jonathan Hartman
+# Copyright 2014-2015 Jonathan Hartman
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@
 # limitations under the License.
 #
 
-require 'chef/provider'
+require 'chef/provider/lwrp_base'
 require 'chef-config/path_helper'
 require 'net/http'
 require_relative 'provider_dropbox_mac_os_x'
@@ -29,101 +29,64 @@ class Chef
     # A Chef provider for the OS-independent pieces of Dropbox packages
     #
     # @author Jonathan Hartman <j@p4nt5.com>
-    class Dropbox < Provider
+    class Dropbox < Provider::LWRPBase
+      use_inline_resources
+
       #
       # WhyRun is supported by this provider
       #
-      # @return [TrueClass, FalseClass]
+      # (see Chef::Provider#whyrun_supported?)
       #
       def whyrun_supported?
         true
       end
 
       #
-      # Load and return the current resource
+      # Install the Dropbox app.
       #
-      # @return [Chef::Resource::Dropbox]
-      #
-      def load_current_resource
-        @current_resource ||= Resource::Dropbox.new(new_resource.name)
-      end
-
-      #
-      # Download and install the Dropbox package
-      #
-      def action_install
-        remote_file.run_action(:create)
-        package.run_action(:install)
-        new_resource.installed = true
+      action :install do
+        install!
       end
 
       private
 
       #
-      # The package resource for the package
+      # Do the actual app installation, tailored to the specific platform.
       #
-      # @return [Chef::Resource::Package, Chef::Resource::DmgPackage]
+      # @raise [NotImplementedError] if not defined for this provider
       #
-      def package
-        unless @package
-          @package = package_resource_class.new(download_dest, run_context)
-          tailor_package_to_platform
-        end
-        @package
+      def install!
+        fail(NotImplementedError,
+             "`install!` method must be implemented for #{self.class} provider")
       end
 
       #
-      # The remote file resource for downloading the package file
-      #
-      # @return [Chef::Resource::RemoteFile]
-      #
-      def remote_file
-        unless @remote_file
-          @remote_file = Resource::RemoteFile.new(download_dest, run_context)
-          @remote_file.source(download_source)
-        end
-        @remote_file
-      end
-
-      #
-      # The source to download the package from
+      # Determine the source file path or download URL for the Dropbox package.
+      # This is pulled from their download page for the current platform by
+      # default, but can be overridden with the `source` attribute.
       #
       # @return [String]
       #
-      def download_source
-        unless @download_source
-          if new_resource.package_url
-            res = chase_redirect(new_resource.package_url)
-          else
-            params = URI.encode_www_form(full: 1,
-                                         plat: node['platform_family'][0..2])
-            res = chase_redirect("https://www.dropbox.com/download?#{params}")
-          end
+      def source_path
+        @source_path ||= begin
+          return new_resource.source unless new_resource.source.nil?
+          params = URI.encode_www_form(full: 1,
+                                       plat: node['platform_family'][0..2])
+          chase_redirect("https://www.dropbox.com/download?#{params}")
         end
-        @download_source ||= res
       end
 
       #
-      # The filesystem path to download the package to and install from
-      #
-      # @return [String]
-      #
-      def download_dest
-        ChefConfig::PathHelper.join(
-          Chef::Config[:file_cache_path],
-          ::File.basename(URI.decode(download_source)).delete(' ')
-        )
-      end
-
-      #
-      # Recursively follow redirects to an eventual package URL
+      # Recursively follow redirects to an eventual package URL. Dropbox's
+      # download links can lead through multiple levels of redirects before
+      # finally getting to an actual package.
       #
       # @param [String] url
       # @return [String]
       #
       def chase_redirect(url)
         u = URI.parse(url)
-        (0..9).each do
+        10.times do
           opts = { use_ssl: u.scheme == 'https',
                    ca_file: Chef::Config[:ssl_ca_file] }
           resp = Net::HTTP.start(u.host, u.port, opts) { |h| h.head(u.to_s) }

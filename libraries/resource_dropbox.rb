@@ -3,7 +3,7 @@
 # Cookbook Name:: dropbox
 # Library:: resource_dropbox
 #
-# Copyright 2014 Jonathan Hartman
+# Copyright 2014-2015 Jonathan Hartman
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,53 +18,23 @@
 # limitations under the License.
 #
 
-require 'chef/resource'
+require 'chef/resource/lwrp_base'
 require_relative 'provider_dropbox'
 
 class Chef
   class Resource
-    # A Chef resource for Dropbox packages
+    # A Chef resource for Dropbox packages.
     #
     # @author Jonathan Hartman <j@p4nt5.com>
-    class Dropbox < Resource
-      attr_accessor :installed
-      alias_method :installed?, :installed
-
-      def initialize(name, run_context = nil)
-        super
-        @resource_name = :dropbox
-        @provider = default_provider
-        @action = :install
-        @allowed_actions = [:install]
-
-        @installed = false
-      end
+    class Dropbox < Resource::LWRPBase
+      self.resource_name = :dropbox
+      actions :install
+      default_action :install
 
       #
-      # Optionally override the calculated package URL
+      # Attribute to allow an override of the default package source path/ URL.
       #
-      # @param [String] arg
-      # @return [String
-      #
-      def package_url(arg = nil)
-        set_or_return(:package_url,
-                      arg,
-                      kind_of: [String, NilClass],
-                      default: nil)
-      end
-
-      private
-
-      #
-      # Determine what the default provider for this platform should be
-      #
-      # @return [Class]
-      #
-      def default_provider
-        return nil unless node && node['platform_family']
-        Chef::Provider::Dropbox.const_get(node['platform_family'].split('_')
-                                          .map(&:capitalize).join)
-      end
+      attribute :source, kind_of: String, default: nil
     end
   end
 end
