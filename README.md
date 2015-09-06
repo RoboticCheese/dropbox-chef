@@ -47,9 +47,9 @@ Attributes
 
 ***default***
 
-A custom package URL can be provided.
+A custom package source path or URL can be provided.
 
-    default['dropbox']['package_url'] = nil
+    default['dropbox']['source'] = nil
 
 Resources
 =========
@@ -61,7 +61,7 @@ Wraps the fetching and installation of a remote package into one main resource.
 Syntax:
 
     dropbox 'dropbox' do
-        package_url 'https://somewhere.org/dropbox.dmg'
+        source 'https://somewhere.org/dropbox.dmg'
         action :install
     end
 
@@ -73,10 +73,10 @@ Actions:
 
 Attributes:
 
-| Attribute   | Default    | Description                                   |
-|-------------|------------|-----------------------------------------------|
-| package_url | `nil`      | Optionally download package from a custom URL |
-| action      | `:install` | The action to perform                         |
+| Attribute | Default    | Description                                   |
+|-----------|------------|-----------------------------------------------|
+| source    | `nil`      | Optionally download package from a custom URL |
+| action    | `:install` | The action to perform                         |
 
 Providers
 =========
@@ -107,7 +107,7 @@ License & Authors
 =================
 - Author: Jonathan Hartman <j@p4nt5.com>
 
-Copyright 2014 Jonathan Hartman
+Copyright 2014-2015 Jonathan Hartman
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

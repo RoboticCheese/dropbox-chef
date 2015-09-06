@@ -3,7 +3,7 @@
 # Cookbook Name:: dropbox
 # Library:: provider_dropbox_windows
 #
-# Copyright 2014 Jonathan Hartman
+# Copyright 2014-2015 Jonathan Hartman
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,28 +22,28 @@ require_relative 'provider_dropbox'
 
 class Chef
   class Provider
-    class Dropbox < Provider
-      # A Chef provider for Dropbox pieces specific to Windows
+    class Dropbox < Provider::LWRPBase
+      # A Chef provider for Dropbox for Windows.
       #
       # @author Jonathan Hartman <j@p4nt5.com>
       class Windows < Dropbox
+        PATH ||= ::File.expand_path('/Program Files/Dropbox')
+
+        provides :dropbox, platform_family: 'windows'
+
         private
 
         #
-        # Ensure the package resource gets Windows-specific attributes
+        # Use a windows_cookbook_package resource to install the Dropbox app.
         #
-        def tailor_package_to_platform
-          @package.source(download_dest)
-          @package.installer_type(:wise)
-        end
-
+        # (see Chef::Provider::Dropbox#install!)
         #
-        # Use the windows_package resource for Windows
-        #
-        # @return [Chef::Resource::Windows]
-        #
-        def package_resource_class
-          Chef::Resource::WindowsCookbookPackage
+        def install!
+          s = source_path
+          windows_cookbook_package 'Dropbox' do
+            source s
+            installer_type :wise
+          end
         end
       end
     end
