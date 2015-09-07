@@ -10,7 +10,7 @@ describe Chef::Provider::Dropbox::Windows do
 
   describe 'PATH' do
     it 'returns the app directory' do
-      expected = File.expand_path('/Program Files/Dropbox')
+      expected = File.expand_path('/Program Files (x86)/Dropbox')
       expect(described_class::PATH).to eq(expected)
     end
   end
@@ -35,12 +35,21 @@ describe Chef::Provider::Dropbox::Windows do
         .and_return('http://example.com/dropbox.exe')
     end
 
-    it 'uses a windows_cookbook_package to install Dropbox' do
+    it 'uses a windows_package to install Dropbox' do
       p = provider
-      expect(p).to receive(:windows_cookbook_package).with('Dropbox').and_yield
+      expect(p).to receive(:windows_package).with('Dropbox').and_yield
       expect(p).to receive(:source).with('http://example.com/dropbox.exe')
       expect(p).to receive(:installer_type).with(:wise)
       p.send(:install!)
+    end
+  end
+
+  describe '#remove!' do
+    it 'uses a windows_package to remove Dropbox' do
+      p = provider
+      expect(p).to receive(:windows_package).with('Dropbox').and_yield
+      expect(p).to receive(:action).with(:remove)
+      p.send(:remove!)
     end
   end
 end

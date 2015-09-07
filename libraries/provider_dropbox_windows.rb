@@ -27,22 +27,36 @@ class Chef
       #
       # @author Jonathan Hartman <j@p4nt5.com>
       class Windows < Dropbox
-        PATH ||= ::File.expand_path('/Program Files/Dropbox')
+        PATH ||= ::File.expand_path('/Program Files (x86)/Dropbox')
 
         provides :dropbox, platform_family: 'windows'
 
         private
 
         #
-        # Use a windows_cookbook_package resource to install the Dropbox app.
+        # Use a windows_package resource to install the Dropbox app.
         #
         # (see Chef::Provider::Dropbox#install!)
         #
         def install!
           s = source_path
-          windows_cookbook_package 'Dropbox' do
+          windows_package 'Dropbox' do
             source s
             installer_type :wise
+          end
+        end
+
+        #
+        # Use a windows_package resource to remove the Dropbox app.
+        # The Windows uninstall script handles stopping a running service and
+        # removing the Dropbox mount locations, so this action is all that's
+        # needed.
+        #
+        # (see Chef::Provider::Dropbox#remove!)
+        #
+        def remove!
+          windows_package 'Dropbox' do
+            action :remove
           end
         end
       end

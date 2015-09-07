@@ -28,7 +28,7 @@ class Chef
     # @author Jonathan Hartman <j@p4nt5.com>
     class Dropbox < Resource::LWRPBase
       self.resource_name = :dropbox
-      actions :install
+      actions :install, :remove
       default_action :install
 
       #

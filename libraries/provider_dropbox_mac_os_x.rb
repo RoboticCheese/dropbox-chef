@@ -45,6 +45,25 @@ class Chef
             volumes_dir 'Dropbox Installer'
           end
         end
+
+        #
+        # In the absence of an uninstall script for OS X, kill any running
+        # instance of Dropbox and delete its directories.
+        #
+        # (see Chef::Provider::Dropbox#remove!)
+        #
+        def remove!
+          execute 'killall Dropbox' do
+            ignore_failure true
+          end
+          [::File.expand_path('/Library/DropboxHelperTools'),
+           ::File.expand_path(PATH)].each do |d|
+            directory d do
+              recursive true
+              action :delete
+            end
+          end
+        end
       end
     end
   end

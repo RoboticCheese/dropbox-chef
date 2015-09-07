@@ -48,6 +48,13 @@ class Chef
         install!
       end
 
+      #
+      # Uninstall the Dropbox app.
+      #
+      action :remove do
+        remove!
+      end
+
       private
 
       #
@@ -58,6 +65,16 @@ class Chef
       def install!
         fail(NotImplementedError,
              "`install!` method must be implemented for #{self.class} provider")
+      end
+
+      #
+      # Do the actual app removal, tailored to the specific platform.
+      #
+      # @raise [NotImplementedError] if not defined for this provider
+      #
+      def remove!
+        fail(NotImplementedError,
+             "`remove!` method must be implemented for #{self.class} provider")
       end
 
       #

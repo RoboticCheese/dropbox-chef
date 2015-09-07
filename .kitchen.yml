@@ -19,3 +19,7 @@ suites:
     run_list:
       - recipe[dropbox]
     attributes:
+  - name: uninstall
+    run_list:
+      - recipe[dropbox_test::uninstall]
+    attributes:

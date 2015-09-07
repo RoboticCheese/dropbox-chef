@@ -42,4 +42,32 @@ describe Chef::Provider::Dropbox::MacOsX do
       p.send(:install!)
     end
   end
+
+  describe '#remove!' do
+    before(:each) do
+      [:execute, :directory].each do |m|
+        allow_any_instance_of(described_class).to receive(m)
+      end
+    end
+
+    it 'kills any running Dropbox instance' do
+      p = provider
+      expect(p).to receive(:execute).with('killall Dropbox').and_yield
+      expect(p).to receive(:ignore_failure).with(true)
+      p.send(:remove!)
+    end
+
+    it 'deletes the Dropbox directories' do
+      p = provider
+      [
+        File.expand_path('/Library/DropboxHelperTools'),
+        '/Applications/Dropbox.app'
+      ].each do |d|
+        expect(p).to receive(:directory).with(d).and_yield
+        expect(p).to receive(:recursive).with(true)
+        expect(p).to receive(:action).with(:delete)
+      end
+      p.send(:remove!)
+    end
+  end
 end

@@ -70,6 +70,7 @@ Actions:
 | Action     | Description                               |
 |------------|-------------------------------------------|
 | `:install` | Default; installs the Dropbox application |
+| `:remove ` | Uninstalls the Dropbox application        |
 
 Attributes:
 
