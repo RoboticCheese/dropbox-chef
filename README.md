@@ -1,12 +1,14 @@
 Dropbox Cookbook
 ================
 [![Cookbook Version](https://img.shields.io/cookbook/v/dropbox.svg)][cookbook]
+[![Linux Build Status](https://img.shields.io/circleci/project/RoboticCheese/dropbox-chef.svg)][circle]
 [![OS X Build Status](https://img.shields.io/travis/RoboticCheese/dropbox-chef.svg)][travis]
 [![Windows Build Status](https://img.shields.io/appveyor/ci/RoboticCheese/dropbox-chef.svg)][appveyor]
 [![Code Climate](https://img.shields.io/codeclimate/github/RoboticCheese/dropbox-chef.svg)][codeclimate]
 [![Coverage Status](https://img.shields.io/coveralls/RoboticCheese/dropbox-chef.svg)][coveralls]
 
 [cookbook]: https://supermarket.chef.io/cookbooks/dropbox
+[circle]: https://circleci.com/gh/RoboticCheese/vlc-chef
 [travis]: https://travis-ci.org/RoboticCheese/dropbox-chef
 [appveyor]: https://ci.appveyor.com/project/RoboticCheese/dropbox-chef
 [codeclimate]: https://codeclimate.com/github/RoboticCheese/dropbox-chef
@@ -17,13 +19,8 @@ A Chef cookbook for installing the Dropbox application.
 Requirements
 ============
 
-This cookbook currently requires an OS X or Windows node. While Dropbox does
-distribute packages for Linux, they are kept in a different download area with
-a different API than the OS X and Windows packages.
-
-It consumes the [dmg](https://supermarket.chef.io/cookbooks/dmg) and
-[windows](https://supermarket.chef.io/cookbooks/windows) cookbooks to support
-OS X and Windows installs.
+This cookbook consumes the `dmg`, `windows`, and `yum` community cookbooks to
+support OS X, Windows, and Fedora, respectively.
 
 Usage
 =====
@@ -93,6 +90,10 @@ Provides the Mac OS X platform support.
 ***Chef::Provider::Dropbox::Windows***
 
 Provides the Windows platform support.
+
+***Chef::Provider::Dropbox::Fedora***
+
+Provides the Fedora platform support.
 
 Contributing
 ============

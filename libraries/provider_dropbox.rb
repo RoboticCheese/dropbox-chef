@@ -23,6 +23,7 @@ require 'chef-config/path_helper'
 require 'net/http'
 require_relative 'provider_dropbox_mac_os_x'
 require_relative 'provider_dropbox_windows'
+require_relative 'provider_dropbox_fedora'
 
 class Chef
   class Provider
