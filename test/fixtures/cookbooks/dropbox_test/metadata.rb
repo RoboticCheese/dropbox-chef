@@ -13,4 +13,5 @@ depends          'dropbox'
 
 supports         'mac_os_x'
 supports         'windows'
+supports         'fedora'
 # rubocop:enable SingleSpaceBeforeFirstArg

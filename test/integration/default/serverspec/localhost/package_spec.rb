@@ -14,4 +14,11 @@ describe 'Dropbox package' do
       expect(subject).to be_installed
     end
   end
+
+  describe package('nautilus-dropbox'),
+           if: !%w(darwin windows).include?(os[:family]) do
+    it 'is installed' do
+      expect(subject).to be_installed
+    end
+  end
 end
