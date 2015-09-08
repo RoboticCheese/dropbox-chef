@@ -13,7 +13,7 @@ describe Chef::Resource::Dropbox do
     end
 
     it 'sets the correct supported actions' do
-      expect(resource.allowed_actions).to eq([:nothing, :install])
+      expect(resource.allowed_actions).to eq([:nothing, :install, :remove])
     end
   end
 

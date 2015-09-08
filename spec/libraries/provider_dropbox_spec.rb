@@ -22,9 +22,23 @@ describe Chef::Provider::Dropbox do
     end
   end
 
+  describe '#action_remove' do
+    it 'removes the app' do
+      p = provider
+      expect(p).to receive(:remove!)
+      p.action_remove
+    end
+  end
+
   describe '#install!' do
     it 'raises an error' do
       expect { provider.send(:install!) }.to raise_error(NotImplementedError)
+    end
+  end
+
+  describe '#remove!' do
+    it 'raises an error' do
+      expect { provider.send(:remove!) }.to raise_error(NotImplementedError)
     end
   end
 
