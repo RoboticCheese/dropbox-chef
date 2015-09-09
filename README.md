@@ -19,8 +19,8 @@ A Chef cookbook for installing the Dropbox application.
 Requirements
 ============
 
-This cookbook consumes the `dmg`, `windows`, and `yum` community cookbooks to
-support OS X, Windows, and Fedora, respectively.
+This cookbook consumes the `dmg`, `windows`, `apt`, and `yum` community
+cookbooks to support OS X, Windows, Ubuntu, and Fedora, respectively.
 
 Usage
 =====
@@ -94,6 +94,10 @@ Provides the Windows platform support.
 ***Chef::Provider::Dropbox::Fedora***
 
 Provides the Fedora platform support.
+
+***Chef::Provider::Dropbox::Ubuntu***
+
+Provides the Ubuntu platform support.
 
 Contributing
 ============
