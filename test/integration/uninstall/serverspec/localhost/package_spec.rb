@@ -15,8 +15,13 @@ describe 'Dropbox package' do
     end
   end
 
-  describe package('nautilus-dropbox'),
-           if: !%w(darwin windows).include?(os[:family]) do
+  describe package('dropbox'), if: os[:family] == 'ubuntu' do
+    it 'is not installed' do
+      expect(subject).not_to be_installed
+    end
+  end
+
+  describe package('nautilus-dropbox'), if: os[:family] == 'fedora' do
     it 'is not installed' do
       expect(subject).not_to be_installed
     end

@@ -28,7 +28,6 @@ describe Chef::Provider::Dropbox::Fedora do
                                  platform: 'fedora',
                                  version: '22')
     end
-    let(:res) { described_class.provides?(node, new_resource) }
     let(:source) { nil }
     let(:new_resource) do
       r = super()

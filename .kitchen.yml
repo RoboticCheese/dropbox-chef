@@ -13,6 +13,7 @@ platforms:
   - name: windows-2012
     driver:
       box: roboticcheese/windows-2012
+  - name: ubuntu-14.04
   - name: fedora-21
 
 suites:
