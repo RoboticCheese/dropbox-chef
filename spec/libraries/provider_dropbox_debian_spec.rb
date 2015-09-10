@@ -1,9 +1,9 @@
 # Encoding: UTF-8
 
 require_relative '../spec_helper'
-require_relative '../../libraries/provider_dropbox_ubuntu'
+require_relative '../../libraries/provider_dropbox_debian'
 
-describe Chef::Provider::Dropbox::Ubuntu do
+describe Chef::Provider::Dropbox::Debian do
   let(:name) { 'default' }
   let(:new_resource) { Chef::Resource::Dropbox.new(name, nil) }
   let(:provider) { described_class.new(new_resource, nil) }
@@ -13,7 +13,15 @@ describe Chef::Provider::Dropbox::Ubuntu do
     let(:node) { ChefSpec::Macros.stub_node('node.example', platform) }
     let(:res) { described_class.provides?(node, new_resource) }
 
-    context 'Fedora' do
+    context 'Debian' do
+      let(:platform) { { platform: 'debian', version: '8.1' } }
+
+      it 'returns true' do
+        expect(res).to eq(true)
+      end
+    end
+
+    context 'Ubuntu' do
       let(:platform) { { platform: 'ubuntu', version: '14.04' } }
 
       it 'returns true' do
@@ -103,18 +111,15 @@ describe Chef::Provider::Dropbox::Ubuntu do
   end
 
   describe '#repository' do
-    let(:node) do
-      ChefSpec::Macros.stub_node('node.example',
-                                 platform: 'ubuntu',
-                                 version: '14.04')
-    end
+    let(:platform) { nil }
+    let(:node) { ChefSpec::Macros.stub_node('node.example', platform) }
     let(:action) { nil }
 
     before(:each) do
       allow_any_instance_of(described_class).to receive(:node).and_return(node)
     end
 
-    shared_examples_for 'any action' do
+    shared_examples_for 'Ubuntu 14.04' do
       it 'passes the action to an apt_repository resource' do
         p = provider
         expect(p).to receive(:apt_repository).with('dropbox').and_yield
@@ -128,16 +133,36 @@ describe Chef::Provider::Dropbox::Ubuntu do
       end
     end
 
-    context 'an add action' do
-      let(:action) { :add }
-
-      it_behaves_like 'any action'
+    shared_examples_for 'Debian 8.1' do
+      it 'passes the action to an apt_repository resource' do
+        p = provider
+        expect(p).to receive(:apt_repository).with('dropbox').and_yield
+        expect(p).to receive(:uri).with('http://linux.dropbox.com/debian')
+        expect(p).to receive(:distribution).with('jessie')
+        expect(p).to receive(:components).with(%w(main))
+        expect(p).to receive(:keyserver).with('pgp.mit.edu')
+        expect(p).to receive(:key).with('5044912E')
+        expect(p).to receive(:action).with(action)
+        p.send(:repository, action)
+      end
     end
 
-    context 'a remove action' do
-      let(:action) { :remove }
+    [:add, :remove].each do |a|
+      context "an #{a} action" do
+        let(:action) { a }
 
-      it_behaves_like 'any action'
+        context 'Ubuntu 14.04' do
+          let(:platform) { { platform: 'ubuntu', version: '14.04' } }
+
+          it_behaves_like 'Ubuntu 14.04'
+        end
+
+        context 'Ubuntu Debian 8.1' do
+          let(:platform) { { platform: 'debian', version: '8.1' } }
+
+          it_behaves_like 'Debian 8.1'
+        end
+      end
     end
   end
 end

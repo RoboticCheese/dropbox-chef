@@ -8,6 +8,7 @@ v?.?.? (????-??-??)
 - Change `package_url` attribute to `source`
 - Add support for Fedora Linux
 - Add support for Ubuntu Linux
+- Add support for Debian Linux
 
 v0.1.0 (2014-12-27)
 -------------------
