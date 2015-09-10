@@ -1,7 +1,7 @@
 # Encoding: UTF-8
 #
 # Cookbook Name:: dropbox
-# Library:: provider_dropbox_ubuntu
+# Library:: provider_dropbox_debian
 #
 # Copyright 2014-2015 Jonathan Hartman
 #
@@ -24,13 +24,14 @@ require_relative 'provider_dropbox'
 class Chef
   class Provider
     class Dropbox < Provider::LWRPBase
-      # A Chef provider for Dropbox for Ubuntu Linux.
+      # A Chef provider for Dropbox for Debian and Ubuntu Linux. The only
+      # difference between the two is in the URL for their APT repos.
       #
       # @author Jonathan Hartman <j@p4nt5.com>
-      class Ubuntu < Dropbox
+      class Debian < Dropbox
         include Chef::DSL::IncludeRecipe
 
-        provides :dropbox, platform: 'ubuntu'
+        provides :dropbox, platform_family: 'debian'
 
         private
 
@@ -66,7 +67,7 @@ class Chef
         #
         def repository(action)
           apt_repository 'dropbox' do
-            uri 'http://linux.dropbox.com/ubuntu'
+            uri "http://linux.dropbox.com/#{node['platform']}"
             distribution node['lsb']['codename']
             components %w(main)
             keyserver 'pgp.mit.edu'

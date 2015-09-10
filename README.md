@@ -20,7 +20,7 @@ Requirements
 ============
 
 This cookbook consumes the `dmg`, `windows`, `apt`, and `yum` community
-cookbooks to support OS X, Windows, Ubuntu, and Fedora, respectively.
+cookbooks to support OS X, Windows, Debian/Ubuntu, and Fedora, respectively.
 
 Usage
 =====
@@ -95,9 +95,9 @@ Provides the Windows platform support.
 
 Provides the Fedora platform support.
 
-***Chef::Provider::Dropbox::Ubuntu***
+***Chef::Provider::Dropbox::Debian***
 
-Provides the Ubuntu platform support.
+Provides the Debian and Ubuntu platform support.
 
 Contributing
 ============
