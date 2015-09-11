@@ -1,7 +1,7 @@
 # Encoding: UTF-8
 #
 # Cookbook Name:: dropbox
-# Library:: provider_dropbox_windows
+# Library:: provider_dropbox_app_windows
 #
 # Copyright 2014-2015 Jonathan Hartman
 #
@@ -18,25 +18,25 @@
 # limitations under the License.
 #
 
-require_relative 'provider_dropbox'
+require_relative 'provider_dropbox_app'
 
 class Chef
   class Provider
-    class Dropbox < Provider::LWRPBase
-      # A Chef provider for Dropbox for Windows.
+    class DropboxApp < Provider::LWRPBase
+      # A Chef provider for Dropbox packages for Windows.
       #
       # @author Jonathan Hartman <j@p4nt5.com>
-      class Windows < Dropbox
+      class Windows < DropboxApp
         PATH ||= ::File.expand_path('/Program Files (x86)/Dropbox')
 
-        provides :dropbox, platform_family: 'windows'
+        provides :dropbox_app, platform_family: 'windows'
 
         private
 
         #
         # Use a windows_package resource to install the Dropbox app.
         #
-        # (see Chef::Provider::Dropbox#install!)
+        # (see Chef::Provider::DropboxApp#install!)
         #
         def install!
           s = source_path
@@ -52,7 +52,7 @@ class Chef
         # removing the Dropbox mount locations, so this action is all that's
         # needed.
         #
-        # (see Chef::Provider::Dropbox#remove!)
+        # (see Chef::Provider::DropboxApp#remove!)
         #
         def remove!
           windows_package 'Dropbox' do

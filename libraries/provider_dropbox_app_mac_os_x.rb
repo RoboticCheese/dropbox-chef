@@ -1,7 +1,7 @@
 # Encoding: UTF-8
 #
 # Cookbook Name:: dropbox
-# Library:: provider_dropbox_mac_os_x
+# Library:: provider_dropbox_app_mac_os_x
 #
 # Copyright 2014-2015 Jonathan Hartman
 #
@@ -18,25 +18,25 @@
 # limitations under the License.
 #
 
-require_relative 'provider_dropbox'
+require_relative 'provider_dropbox_app'
 
 class Chef
   class Provider
-    class Dropbox < Provider::LWRPBase
-      # A Chef provider for Dropbox for Mac OS X.
+    class DropboxApp < Provider::LWRPBase
+      # A Chef provider for Dropbox packages for Mac OS X.
       #
       # @author Jonathan Hartman <j@p4nt5.com>
-      class MacOsX < Dropbox
+      class MacOsX < DropboxApp
         PATH ||= '/Applications/Dropbox.app'
 
-        provides :dropbox, platform_family: 'mac_os_x'
+        provides :dropbox_app, platform_family: 'mac_os_x'
 
         private
 
         #
         # Use a dmg_package resource to install the Dropbox app.
         #
-        # (see Chef::Provider::Dropbox#install!)
+        # (see Chef::Provider::DropboxApp#install!)
         #
         def install!
           s = source_path
@@ -50,7 +50,7 @@ class Chef
         # In the absence of an uninstall script for OS X, kill any running
         # instance of Dropbox and delete its directories.
         #
-        # (see Chef::Provider::Dropbox#remove!)
+        # (see Chef::Provider::DropboxApp#remove!)
         #
         def remove!
           execute 'killall Dropbox' do

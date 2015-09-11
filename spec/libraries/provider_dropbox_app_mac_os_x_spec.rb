@@ -1,11 +1,11 @@
 # Encoding: UTF-8
 
 require_relative '../spec_helper'
-require_relative '../../libraries/provider_dropbox_mac_os_x'
+require_relative '../../libraries/provider_dropbox_app_mac_os_x'
 
-describe Chef::Provider::Dropbox::MacOsX do
+describe Chef::Provider::DropboxApp::MacOsX do
   let(:name) { 'default' }
-  let(:new_resource) { Chef::Resource::Dropbox.new(name, nil) }
+  let(:new_resource) { Chef::Resource::DropboxApp.new(name, nil) }
   let(:provider) { described_class.new(new_resource, nil) }
 
   describe 'PATH' do

@@ -1,7 +1,7 @@
 # Encoding: UTF-8
 #
 # Cookbook Name:: dropbox
-# Library:: provider_dropbox_debian
+# Library:: provider_dropbox_app_debian
 #
 # Copyright 2014-2015 Jonathan Hartman
 #
@@ -19,26 +19,26 @@
 #
 
 require 'chef/dsl/include_recipe'
-require_relative 'provider_dropbox'
+require_relative 'provider_dropbox_app'
 
 class Chef
   class Provider
-    class Dropbox < Provider::LWRPBase
-      # A Chef provider for Dropbox for Debian and Ubuntu Linux. The only
-      # difference between the two is in the URL for their APT repos.
+    class DropboxApp < Provider::LWRPBase
+      # A Chef provider for Dropbox packages for Debian and Ubuntu Linux. The
+      # only difference between the two is in the URL for their APT repos.
       #
       # @author Jonathan Hartman <j@p4nt5.com>
-      class Debian < Dropbox
+      class Debian < DropboxApp
         include Chef::DSL::IncludeRecipe
 
-        provides :dropbox, platform_family: 'debian'
+        provides :dropbox_app, platform_family: 'debian'
 
         private
 
         #
         # Configure the Dropbox APT repo and install the package.
         #
-        # (see Chef::Provider::Dropbox#install!)
+        # (see Chef::Provider::DropboxApp#install!)
         #
         def install!
           return package(new_resource.source) if new_resource.source
@@ -50,7 +50,7 @@ class Chef
         #
         # Remove the Dropbox package and APT repo
         #
-        # (see Chef::Provider::Dropbox#remove!)
+        # (see Chef::Provider::DropboxApp#remove!)
         #
         def remove!
           package 'dropbox' do
