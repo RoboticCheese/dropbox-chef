@@ -37,7 +37,7 @@ Recipes
 
 ***default***
 
-Calls the `dropbox` resource to do a package install.
+Calls the `dropbox` resource to install Dropbox with a given set of attributes.
 
 Attributes
 ==========
@@ -53,11 +53,37 @@ Resources
 
 ***dropbox***
 
-Wraps the fetching and installation of a remote package into one main resource.
+Wraps the other Dropbox resources into a single parent resource.
 
 Syntax:
 
-    dropbox 'dropbox' do
+    dropbox 'default' do
+        source 'https://somewhere.org/dropbox.dmg'
+        action :install
+    end
+
+Actions:
+
+| Action     | Description                                |
+|------------|--------------------------------------------|
+| `:install` | Default; installs a `dropbox_app` resource |
+| `:remove ` | Removes a `dropbox_app` resource           |
+
+Attributes:
+
+| Attribute | Default    | Description                                        |
+|-----------|------------|----------------------------------------------------|
+| source    | `nil`      | Pass an optional source to the child `dropbox_app` |
+| action    | `:install` | The action to perform                              |
+
+
+***dropbox_app***
+
+Responsible for fetching and installing Dropbox application packages.
+
+Syntax:
+
+    dropbox_app 'default' do
         source 'https://somewhere.org/dropbox.dmg'
         action :install
     end
@@ -71,33 +97,37 @@ Actions:
 
 Attributes:
 
-| Attribute | Default    | Description                                   |
-|-----------|------------|-----------------------------------------------|
-| source    | `nil`      | Optionally download package from a custom URL |
-| action    | `:install` | The action to perform                         |
+| Attribute | Default    | Description                                      |
+|-----------|------------|--------------------------------------------------|
+| source    | `nil`      | Fetch the Dropbox package from a custom path/URL |
+| action    | `:install` | The action to perform                            |
 
 Providers
 =========
 
 ***Chef::Provider::Dropbox***
 
+A parent provider that divvies up responsibilities between the child resources.
+
+***Chef::Provider::DropboxApp***
+
 A generic provider for all non-platform-specific functionality.
 
-***Chef::Provider::Dropbox::MacOsX***
+***Chef::Provider::DropboxApp::MacOsX***
 
 Provides the Mac OS X platform support.
 
-***Chef::Provider::Dropbox::Windows***
+***Chef::Provider::DropboxApp::Windows***
 
 Provides the Windows platform support.
 
-***Chef::Provider::Dropbox::Fedora***
-
-Provides the Fedora platform support.
-
-***Chef::Provider::Dropbox::Debian***
+***Chef::Provider::DropboxApp::Debian***
 
 Provides the Debian and Ubuntu platform support.
+
+***Chef::Provider::DropboxApp::Fedora***
+
+Provides the Fedora platform support.
 
 Contributing
 ============

@@ -1,7 +1,7 @@
 # Encoding: UTF-8
 #
 # Cookbook Name:: dropbox
-# Library:: resource_dropbox
+# Library:: resource_dropbox_app
 #
 # Copyright 2014-2015 Jonathan Hartman
 #
@@ -19,21 +19,20 @@
 #
 
 require 'chef/resource/lwrp_base'
-require_relative 'provider_dropbox'
+require_relative 'provider_dropbox_app'
 
 class Chef
   class Resource
-    # A Chef parent resource for Dropbox app + config + service.
+    # A Chef resource for Dropbox packages.
     #
     # @author Jonathan Hartman <j@p4nt5.com>
-    class Dropbox < Resource::LWRPBase
-      self.resource_name = :dropbox
+    class DropboxApp < Resource::LWRPBase
+      self.resource_name = :dropbox_app
       actions :install, :remove
       default_action :install
 
       #
-      # Attribute for a package source path/URL to pass to the child
-      # dropbox_app resource.
+      # Attribute to allow an override of the default package source path/ URL.
       #
       attribute :source, kind_of: String, default: nil
     end

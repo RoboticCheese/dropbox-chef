@@ -1,7 +1,7 @@
 # Encoding: UTF-8
 #
 # Cookbook Name:: dropbox
-# Library:: provider_dropbox_fedora
+# Library:: provider_dropbox_app_fedora
 #
 # Copyright 2014-2015 Jonathan Hartman
 #
@@ -18,23 +18,23 @@
 # limitations under the License.
 #
 
-require_relative 'provider_dropbox'
+require_relative 'provider_dropbox_app'
 
 class Chef
   class Provider
-    class Dropbox < Provider::LWRPBase
-      # A Chef provider for Dropbox for Fedora Linux.
+    class DropboxApp < Provider::LWRPBase
+      # A Chef provider for Dropbox packages for Fedora Linux.
       #
       # @author Jonathan Hartman <j@p4nt5.com>
-      class Fedora < Dropbox
-        provides :dropbox, platform: 'fedora'
+      class Fedora < DropboxApp
+        provides :dropbox_app, platform: 'fedora'
 
         private
 
         #
         # Configure the Dropbox YUM repo and install the package.
         #
-        # (see Chef::Provider::Dropbox#install!)
+        # (see Chef::Provider::DropboxApp#install!)
         #
         def install!
           return package(new_resource.source) if new_resource.source
@@ -49,7 +49,7 @@ class Chef
         #
         # Remove the Dropbox package and YUM repo
         #
-        # (see Chef::Provider::Dropbox#remove!)
+        # (see Chef::Provider::DropboxApp#remove!)
         #
         def remove!
           package 'nautilus-dropbox' do
