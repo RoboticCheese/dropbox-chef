@@ -19,7 +19,13 @@
 #
 
 if defined?(ChefSpec)
-  def install_dropbox(name)
-    ChefSpec::Matchers::ResourceMatcher.new(:dropbox, :install, name)
+  [:dropbox, :dropbox_app].each do |m|
+    ChefSpec.define_matcher(m)
+
+    [:install, :remove].each do |a|
+      define_method("#{a}_#{m}") do |name|
+        ChefSpec::Matchers::ResourceMatcher.new(m, a, name)
+      end
+    end
   end
 end
