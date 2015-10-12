@@ -8,8 +8,10 @@ dependencies:
   pre:
     - rvm install 2.0.0-p645
   override:
-    - bundle install
-    - rvm-exec 2.0.0-p645 bundle install
+    - gem install -V berkshelf
+    - rvm-exec 2.0.0-p645 gem install -V berkshelf
+    - bundle install --without=development integration
+    - rvm-exec 2.0.0-p645 bundle install --without=development integration
   cache_directories:
     - /home/ubuntu/.rvm/gems
 

@@ -5,8 +5,9 @@ require_relative '../../libraries/provider_dropbox'
 
 describe Chef::Provider::Dropbox do
   let(:name) { 'default' }
-  let(:new_resource) { Chef::Resource::Dropbox.new(name, nil) }
-  let(:provider) { described_class.new(new_resource, nil) }
+  let(:run_context) { ChefSpec::SoloRunner.new.converge.run_context }
+  let(:new_resource) { Chef::Resource::Dropbox.new(name, run_context) }
+  let(:provider) { described_class.new(new_resource, run_context) }
 
   describe '#whyrun_supported?' do
     it 'returns true' do
