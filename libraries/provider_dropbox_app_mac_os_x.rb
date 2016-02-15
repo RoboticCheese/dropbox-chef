@@ -27,7 +27,7 @@ class Chef
       #
       # @author Jonathan Hartman <j@p4nt5.com>
       class MacOsX < DropboxApp
-        PATH ||= '/Applications/Dropbox.app'
+        PATH ||= '/Applications/Dropbox.app'.freeze
 
         provides :dropbox_app, platform_family: 'mac_os_x'
 

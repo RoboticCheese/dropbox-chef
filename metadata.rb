@@ -1,6 +1,5 @@
 # Encoding: UTF-8
-#
-# rubocop:disable SingleSpaceBeforeFirstArg
+
 name             'dropbox'
 maintainer       'Jonathan Hartman'
 maintainer_email 'j@p4nt5.com'
@@ -22,4 +21,3 @@ supports         'windows'
 supports         'ubuntu'
 supports         'debian'
 supports         'fedora'
-# rubocop:enable SingleSpaceBeforeFirstArg

@@ -65,8 +65,10 @@ class Chef
       # @raise [NotImplementedError] if not defined for this provider
       #
       def install!
-        fail(NotImplementedError,
-             "`install!` method must be implemented for #{self.class} provider")
+        raise(
+          NotImplementedError,
+          "`install!` method must be implemented for #{self.class} provider"
+        )
       end
 
       #
@@ -75,8 +77,10 @@ class Chef
       # @raise [NotImplementedError] if not defined for this provider
       #
       def remove!
-        fail(NotImplementedError,
-             "`remove!` method must be implemented for #{self.class} provider")
+        raise(
+          NotImplementedError,
+          "`remove!` method must be implemented for #{self.class} provider"
+        )
       end
 
       #
