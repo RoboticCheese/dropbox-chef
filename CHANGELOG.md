@@ -1,8 +1,8 @@
 Dropbox Cookbook CHANGELOG
 ==========================
 
-v?.?.? (????-??-??)
--------------------
+Unreleased
+----------
 - Rewrite to modern resource/provider standards (breaking compatibility with
   Chef < 12)
 - Change `package_url` attribute to `source`
