@@ -3,8 +3,8 @@ Dropbox Cookbook CHANGELOG
 
 Unreleased
 ----------
-- Rewrite to modern resource/provider standards (breaking compatibility with
-  Chef < 12)
+- Convert everything to custom resources
+- Rename the main resource `:install` action to `:create`
 - Change `package_url` attribute to `source`
 - Add support for Fedora Linux
 - Add support for Ubuntu Linux

@@ -19,24 +19,39 @@
 # limitations under the License.
 #
 
-require 'chef/resource/lwrp_base'
-require_relative 'provider_dropbox'
+require 'chef/resource'
 
 class Chef
   class Resource
     # A Chef parent resource for Dropbox app + config + service.
     #
     # @author Jonathan Hartman <j@p4nt5.com>
-    class Dropbox < Resource::LWRPBase
-      self.resource_name = :dropbox
-      actions :install, :remove
-      default_action :install
+    class Dropbox < Resource
+      provides :dropbox
+
+      default_action :create
 
       #
-      # Attribute for a package source path/URL to pass to the child
+      # Property for a package source path/URL to pass to the child
       # dropbox_app resource.
       #
-      attribute :source, kind_of: String, default: nil
+      property :source, String
+
+      #
+      # Install the Dropbox app.
+      #
+      action :create do
+        dropbox_app new_resource.name do
+          source new_resource.source unless new_resource.source.nil?
+        end
+      end
+
+      #
+      # Uninstall the Dropbox app.
+      #
+      action :remove do
+        dropbox_app(new_resource.name) { action :remove }
+      end
     end
   end
 end
