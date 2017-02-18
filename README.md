@@ -22,8 +22,7 @@ Requirements
 As of v1.0.0, this cookbook requires Chef 12.15+, or Chef 12.x and the
 compat_resource cookbook.
 
-It consumes the `dmg` and `windows` community cookbooks to implement its MacOS
-and Windows support.
+It consumes the `dmg` community cookbooks to implement its MacOS support.
 
 Usage
 =====
