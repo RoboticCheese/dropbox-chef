@@ -41,19 +41,13 @@ describe Chef::Provider::DropboxApp::Debian do
     end
 
     before(:each) do
-      [:include_recipe, :repository, :package].each do |m|
+      [:repository, :package].each do |m|
         allow_any_instance_of(described_class).to receive(m)
       end
     end
 
     context 'no source override' do
       let(:source) { nil }
-
-      it 'refreshes the APT cache' do
-        p = provider
-        expect(p).to receive(:include_recipe).with('apt')
-        p.send(:install!)
-      end
 
       it 'configures the dropbox APT repo' do
         p = provider
@@ -70,12 +64,6 @@ describe Chef::Provider::DropboxApp::Debian do
 
     context 'a source override' do
       let(:source) { 'http://example.com/dropbox.deb' }
-
-      it 'does nothing with the APT cache' do
-        p = provider
-        expect(p).not_to receive(:include_recipe)
-        p.send(:install!)
-      end
 
       it 'does not configure the dropbox APT repo' do
         p = provider

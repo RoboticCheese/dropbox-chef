@@ -19,7 +19,6 @@
 # limitations under the License.
 #
 
-require 'chef/dsl/include_recipe'
 require_relative 'provider_dropbox_app'
 
 class Chef
@@ -30,8 +29,6 @@ class Chef
       #
       # @author Jonathan Hartman <j@p4nt5.com>
       class Debian < DropboxApp
-        include Chef::DSL::IncludeRecipe
-
         provides :dropbox_app, platform_family: 'debian'
 
         private
@@ -43,7 +40,6 @@ class Chef
         #
         def install!
           return package(new_resource.source) if new_resource.source
-          include_recipe 'apt'
           repository(:add)
           package 'dropbox'
         end
