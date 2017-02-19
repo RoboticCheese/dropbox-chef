@@ -19,23 +19,56 @@
 # limitations under the License.
 #
 
-require 'chef/resource/lwrp_base'
-require_relative 'provider_dropbox_app'
+require 'chef/resource'
 
 class Chef
   class Resource
     # A Chef resource for Dropbox packages.
     #
     # @author Jonathan Hartman <j@p4nt5.com>
-    class DropboxApp < Resource::LWRPBase
-      self.resource_name = :dropbox_app
-      actions :install, :remove
+    class DropboxApp < Resource
       default_action :install
 
       #
-      # Attribute to allow an override of the default package source path/ URL.
+      # Property to allow an override of the default package source path/ URL.
       #
-      attribute :source, kind_of: String, default: nil
+      property :source, String
+
+      #
+      # Determine the source file path or download URL for the Dropbox package.
+      # This is pulled from their download page for the current platform by
+      # default, but can be overridden with the `source` attribute.
+      #
+      # @return [String]
+      #
+      def source_path
+        @source_path ||= begin
+          return source unless source.nil?
+          params = URI.encode_www_form(full: 1,
+                                       plat: node['platform_family'][0..2])
+          chase_redirect("https://www.dropbox.com/download?#{params}")
+        end
+      end
+
+      #
+      # Recursively follow redirects to an eventual package URL. Dropbox's
+      # download links can lead through multiple levels of redirects before
+      # finally getting to an actual package.
+      #
+      # @param [String] url
+      # @return [String]
+      #
+      def chase_redirect(url)
+        u = URI.parse(url)
+        10.times do
+          opts = { use_ssl: u.scheme == 'https',
+                   ca_file: Chef::Config[:ssl_ca_file] }
+          resp = Net::HTTP.start(u.host, u.port, opts) { |h| h.head(u.to_s) }
+          return u.to_s unless resp.is_a?(Net::HTTPRedirection)
+          u = URI.parse(resp['location'])
+        end
+        nil
+      end
     end
   end
 end

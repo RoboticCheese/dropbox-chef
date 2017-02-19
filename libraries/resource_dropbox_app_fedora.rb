@@ -2,7 +2,7 @@
 # frozen_string_literal: true
 #
 # Cookbook Name:: dropbox
-# Library:: provider_dropbox_app_fedora
+# Library:: resource_dropbox_app_fedora
 #
 # Copyright 2014-2017, Jonathan Hartman
 #
@@ -19,26 +19,23 @@
 # limitations under the License.
 #
 
-require_relative 'provider_dropbox_app'
+require_relative 'resource_dropbox_app'
 
 class Chef
-  class Provider
-    class DropboxApp < Provider::LWRPBase
-      # A Chef provider for Dropbox packages for Fedora Linux.
+  class Resource
+    # A Chef resource for Dropbox packages for Fedora Linux.
+    #
+    # @author Jonathan Hartman <j@p4nt5.com>
+    class DropboxAppFedora < Resource::DropboxApp
+      provides :dropbox_app, platform: 'fedora'
+
       #
-      # @author Jonathan Hartman <j@p4nt5.com>
-      class Fedora < DropboxApp
-        provides :dropbox_app, platform: 'fedora'
-
-        private
-
-        #
-        # Configure the Dropbox YUM repo and install the package.
-        #
-        # (see Chef::Provider::DropboxApp#install!)
-        #
-        def install!
-          return package(new_resource.source) if new_resource.source
+      # Configure the Dropbox YUM repo and install the package.
+      #
+      action :install do
+        if new_resource.source
+          package new_resource.source
+        else
           yum_repository 'dropbox' do
             baseurl 'https://linux.dropbox.com/fedora/' \
                     "#{node['platform_version']}/"
@@ -46,20 +43,14 @@ class Chef
           end
           package 'nautilus-dropbox'
         end
+      end
 
-        #
-        # Remove the Dropbox package and YUM repo
-        #
-        # (see Chef::Provider::DropboxApp#remove!)
-        #
-        def remove!
-          package 'nautilus-dropbox' do
-            action :remove
-          end
-          yum_repository 'dropbox' do
-            action :remove
-          end
-        end
+      #
+      # Remove the Dropbox package and YUM repo.
+      #
+      action :remove do
+        package('nautilus-dropbox') { action :remove }
+        yum_repository('dropbox') { action :remove }
       end
     end
   end
