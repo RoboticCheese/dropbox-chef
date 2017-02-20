@@ -20,12 +20,15 @@
 #
 
 if defined?(ChefSpec)
-  %i(dropbox dropbox_app).each do |m|
-    ChefSpec.define_matcher(m)
+  {
+    dropbox: %i(create remove),
+    dropbox_app: %i(install remove)
+  }.each do |matcher, actions|
+    ChefSpec.define_matcher(matcher)
 
-    %i(install remove).each do |a|
-      define_method("#{a}_#{m}") do |name|
-        ChefSpec::Matchers::ResourceMatcher.new(m, a, name)
+    actions.each do |action|
+      define_method("#{action}_#{matcher}") do |name|
+        ChefSpec::Matchers::ResourceMatcher.new(matcher, action, name)
       end
     end
   end
