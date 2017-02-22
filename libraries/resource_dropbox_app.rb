@@ -19,6 +19,7 @@
 # limitations under the License.
 #
 
+require 'net/http'
 require 'chef/resource'
 
 class Chef
