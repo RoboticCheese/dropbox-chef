@@ -24,7 +24,7 @@ group :test do
   gem 'simplecov'
   gem 'simplecov-console'
   gem 'test-kitchen'
-  gem 'winrm-transport'
+  gem 'winrm-fs'
 end
 
 group :integration do

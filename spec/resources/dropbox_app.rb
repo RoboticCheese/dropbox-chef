@@ -24,11 +24,10 @@ shared_context 'resources::dropbox_app' do
 
   shared_context 'all default properties' do
   end
-  
+
   shared_context 'an overridden source property' do
     let(:source) { 'http://example.com/db.dmg' }
   end
-
 
   shared_examples_for 'any platform' do
     context 'the :install action' do
