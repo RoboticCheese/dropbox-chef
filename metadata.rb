@@ -8,12 +8,12 @@ license 'Apache v2.0'
 description 'Installs Dropbox'
 long_description 'Installs Dropbox'
 version '0.1.1'
-chef_version '>= 12.1'
+chef_version '>= 12.6'
 
 source_url 'https://github.com/roboticcheese/dropbox-chef'
 issues_url 'https://github.com/roboticcheese/dropbox-chef/issues'
 
-depends 'dmg', '~> 2.2'
+depends 'dmg', '~> 3.1'
 
 supports 'mac_os_x'
 supports 'windows'
