@@ -27,8 +27,6 @@ class Chef
     #
     # @author Jonathan Hartman <j@p4nt5.com>
     class DropboxAppMacOsX < Resource::DropboxApp
-      PATH ||= '/Applications/Dropbox.app'.freeze
-
       provides :dropbox_app, platform_family: 'mac_os_x'
 
       #
@@ -50,8 +48,7 @@ class Chef
         execute 'killall Dropbox' do
           ignore_failure true
         end
-        [::File.expand_path('/Library/DropboxHelperTools'),
-         ::File.expand_path(PATH)].each do |d|
+        %w(/Library/DropboxHelperTools /Applications/Dropbox.app).each do |d|
           directory d do
             recursive true
             action :delete
