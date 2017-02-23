@@ -14,7 +14,7 @@ describe 'dropbox::default' do
 
   context 'default attributes' do
     it 'installs Dropbox' do
-      expect(chef_run).to install_dropbox('dropbox').with(source: nil)
+      expect(chef_run).to create_dropbox('dropbox').with(source: nil)
     end
   end
 
@@ -22,7 +22,7 @@ describe 'dropbox::default' do
     let(:overrides) { { source: 'http://example.com/pkg.dmg' } }
 
     it 'installs from the desired package URL' do
-      expect(chef_run).to install_dropbox('dropbox')
+      expect(chef_run).to create_dropbox('dropbox')
         .with(source: overrides[:source])
     end
   end

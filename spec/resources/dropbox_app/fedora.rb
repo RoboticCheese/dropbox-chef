@@ -3,7 +3,7 @@
 
 require_relative '../dropbox_app'
 
-describe 'resources::dropbox_app::fedora' do
+shared_context 'resources::dropbox_app::fedora' do
   include_context 'resources::dropbox_app'
 
   let(:platform) { 'fedora' }
@@ -18,7 +18,7 @@ describe 'resources::dropbox_app::fedora' do
         include_context description
 
         it 'adds the dropbox YUM repo' do
-          expect(chef_run).to add_yum_repository('dropbox').with(
+          expect(chef_run).to create_yum_repository('dropbox').with(
             baseurl: "https://linux.dropbox.com/fedora/#{platform_version}/",
             gpgkey: 'http://linux.dropbox.com/fedora/rpm-public-key.asc'
           )
@@ -33,7 +33,7 @@ describe 'resources::dropbox_app::fedora' do
         include_context description
 
         it 'does not add the dropbox YUM repo' do
-          expect(chef_run).to_not add_yum_repository('dropbox')
+          expect(chef_run).to_not create_yum_repository('dropbox')
         end
 
         it 'installs the specified package' do

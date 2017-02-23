@@ -3,7 +3,7 @@
 
 require_relative '../dropbox'
 
-describe 'resources::dropbox::windows' do
+shared_context 'resources::dropbox::windows' do
   include_context 'resources::dropbox'
 
   let(:platform) { 'windows' }

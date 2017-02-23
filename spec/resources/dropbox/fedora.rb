@@ -3,7 +3,7 @@
 
 require_relative '../dropbox'
 
-describe 'resources::dropbox::fedora' do
+shared_context 'resources::dropbox::fedora' do
   include_context 'resources::dropbox'
 
   let(:platform) { 'fedora' }

@@ -3,7 +3,7 @@
 
 require_relative '../dropbox'
 
-describe 'resources::dropbox::debian' do
+shared_context 'resources::dropbox::debian' do
   include_context 'resources::dropbox'
 
   let(:platform) { 'debian' }

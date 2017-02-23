@@ -3,7 +3,7 @@
 
 require_relative '../dropbox_app'
 
-describe 'resources::dropbox_app::mac_os_x' do
+shared_context 'resources::dropbox_app::mac_os_x' do
   include_context 'resources::dropbox_app'
 
   let(:platform) { 'mac_os_x' }
@@ -31,7 +31,8 @@ describe 'resources::dropbox_app::mac_os_x' do
       shared_examples_for 'any property set' do
         it 'installs the dropbox package' do
           expect(chef_run).to install_dmg_package('Dropbox').with(
-            source: source || 'https://example.com/db.dmg',
+            source: source || \
+                    'https://www.dropbox.com/download?full=1&plat=mac',
             volumes_dir: 'Dropbox Installer'
           )
         end
