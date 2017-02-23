@@ -14,7 +14,6 @@ source_url 'https://github.com/roboticcheese/dropbox-chef'
 issues_url 'https://github.com/roboticcheese/dropbox-chef/issues'
 
 depends 'dmg', '~> 2.2'
-depends 'windows', '~> 1.36'
 
 supports 'mac_os_x'
 supports 'windows'

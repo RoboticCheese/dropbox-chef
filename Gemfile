@@ -5,7 +5,6 @@ source 'https://rubygems.org'
 
 group :development do
   gem 'guard'
-  gem 'guard-foodcritic'
   gem 'guard-kitchen'
   gem 'guard-rspec'
   gem 'yard-chef'

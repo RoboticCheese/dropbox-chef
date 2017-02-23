@@ -30,7 +30,7 @@ shared_context 'resources::dropbox_app::windows' do
 
       shared_examples_for 'any property set' do
         it 'installs the dropbox package' do
-          expect(chef_run).to install_windows_package('Dropbox').with(
+          expect(chef_run).to install_package('Dropbox').with(
             source: source || \
                     'https://www.dropbox.com/download?full=1&plat=win',
             installer_type: :wise
@@ -55,7 +55,7 @@ shared_context 'resources::dropbox_app::windows' do
       include_context description
 
       it 'removes the dropbox package' do
-        expect(chef_run).to remove_windows_package('Dropbox')
+        expect(chef_run).to remove_package('Dropbox')
       end
     end
   end

@@ -4,10 +4,11 @@
 require_relative '../spec_helper'
 
 describe 'dropbox::default' do
+  let(:platform) { { platform: 'ubuntu', version: '16.04' } }
   let(:overrides) { {} }
   let(:runner) do
-    ChefSpec::ServerRunner.new do |node|
-      overrides.each { |k, v| node.set['dropbox'][k] = v }
+    ChefSpec::ServerRunner.new(platform) do |node|
+      overrides.each { |k, v| node.normal['dropbox'][k] = v }
     end
   end
   let(:chef_run) { runner.converge(described_recipe) }

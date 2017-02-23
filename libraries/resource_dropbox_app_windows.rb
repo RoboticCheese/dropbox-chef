@@ -36,7 +36,7 @@ class Chef
       #
       action :install do
         s = source_path
-        windows_package 'Dropbox' do
+        package 'Dropbox' do
           source s
           installer_type :wise
         end
@@ -49,7 +49,7 @@ class Chef
       # needed.
       #
       action :remove do
-        windows_package('Dropbox') { action :remove }
+        package('Dropbox') { action :remove }
       end
     end
   end
