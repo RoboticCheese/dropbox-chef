@@ -13,16 +13,15 @@ platforms:
   - name: windows-2012
     driver:
       box: roboticcheese/windows-2012
+  - name: ubuntu-16.04
   - name: ubuntu-14.04
-  - name: debian-8.1
-  - name: fedora-21
+  - name: debian-8.6
+  - name: fedora-25
 
 suites:
   - name: default
     run_list:
       - recipe[dropbox]
-    attributes:
   - name: uninstall
     run_list:
       - recipe[dropbox_test::uninstall]
-    attributes:
