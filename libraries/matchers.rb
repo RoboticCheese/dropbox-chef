@@ -1,9 +1,10 @@
-# Encoding: UTF-8
+# encoding: utf-8
+# frozen_string_literal: true
 #
 # Cookbook Name:: dropbox
 # Library:: matchers
 #
-# Copyright 2014-2015 Jonathan Hartman
+# Copyright 2014-2017, Jonathan Hartman
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,12 +20,15 @@
 #
 
 if defined?(ChefSpec)
-  [:dropbox, :dropbox_app].each do |m|
-    ChefSpec.define_matcher(m)
+  {
+    dropbox: %i(create remove),
+    dropbox_app: %i(install remove)
+  }.each do |matcher, actions|
+    ChefSpec.define_matcher(matcher)
 
-    [:install, :remove].each do |a|
-      define_method("#{a}_#{m}") do |name|
-        ChefSpec::Matchers::ResourceMatcher.new(m, a, name)
+    actions.each do |action|
+      define_method("#{action}_#{matcher}") do |name|
+        ChefSpec::Matchers::ResourceMatcher.new(matcher, action, name)
       end
     end
   end

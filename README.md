@@ -19,8 +19,10 @@ A Chef cookbook for installing the Dropbox application.
 Requirements
 ============
 
-This cookbook consumes the `dmg`, `windows`, `apt`, and `yum` community
-cookbooks to support OS X, Windows, Debian/Ubuntu, and Fedora, respectively.
+As of v1.0.0, this cookbook requires Chef 12.15+, or Chef 12.x and the
+compat_resource cookbook.
+
+It consumes the `dmg` community cookbooks to implement its MacOS support.
 
 Usage
 =====
@@ -143,7 +145,7 @@ License & Authors
 =================
 - Author: Jonathan Hartman <j@p4nt5.com>
 
-Copyright 2014-2015 Jonathan Hartman
+Copyright 2014-2017, Jonathan Hartman
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
