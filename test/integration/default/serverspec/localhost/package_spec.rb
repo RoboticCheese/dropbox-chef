@@ -3,7 +3,7 @@
 
 require_relative '../spec_helper'
 
-describe 'Dropbox package' do
+describe 'dropbox::default::package' do
   describe file('/Applications/Dropbox.app'), if: os[:family] == 'darwin' do
     it 'exists' do
       expect(subject).to be_directory

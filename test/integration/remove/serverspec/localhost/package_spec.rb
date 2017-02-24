@@ -3,7 +3,7 @@
 
 require_relative '../spec_helper'
 
-describe 'Dropbox package' do
+describe 'dropbox::remove::package' do
   describe file('/Applications/Dropbox.app'), if: os[:family] == 'darwin' do
     it 'does not exist' do
       expect(subject).not_to be_directory

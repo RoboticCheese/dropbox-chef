@@ -22,6 +22,6 @@ suites:
   - name: default
     run_list:
       - recipe[dropbox]
-  - name: uninstall
+  - name: remove
     run_list:
-      - recipe[dropbox_test::uninstall]
+      - recipe[dropbox_test::remove]
